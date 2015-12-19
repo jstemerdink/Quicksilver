@@ -321,8 +321,8 @@
     <Compile Include="Facades\PromotionHelperFacade.cs" />
     <Compile Include="Facades\SearchFacade.cs" />
     <Compile Include="Facades\UrlAuthorizationFacade.cs" />
-    <Compile Include="Factories\CartFactory.cs" />
-    <Compile Include="Factories\ProductFactory.cs" />
+    <Compile Include="Factories\CartItemFactory.cs" />
+    <Compile Include="Factories\ProductModelFactory.cs" />
     <Compile Include="Handlers\ControllerExceptionHandler.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Contracts\Models\IPageViewModel.cs" />

@@ -157,7 +157,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Search.Models
             return new FacetOption { Name = facet, Key = facet, Selected = true };
         }
 
-        public SearchFilter GetSearchFilterForNode(NodeContent nodeContent)
+        private SearchFilter GetSearchFilterForNode(NodeContent nodeContent)
         {
             var configFilter = new SearchFilter
             {

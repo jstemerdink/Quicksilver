@@ -1,8 +1,8 @@
 ﻿using EPiServer.Reference.Commerce.Site.Features.AddressBook.Pages;
-using EPiServer.Reference.Commerce.Site.Features.Shared.ViewModels;
 using System.Collections.Generic;
 
 using EPiServer.Reference.Commerce.Domain.Contracts.Models;
+using EPiServer.Reference.Commerce.Domain.Models.ViewModels;
 
 namespace EPiServer.Reference.Commerce.Site.Features.AddressBook.ViewModels
 {

@@ -1,6 +1,5 @@
 using EPiServer.Core;
 using EPiServer.Reference.Commerce.Site.Features.Registration.Models;
-using EPiServer.Reference.Commerce.Site.Features.Shared.ViewModels;
 using Mediachase.Commerce;
 using Mediachase.Commerce.Orders;
 using System;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 
 using EPiServer.Reference.Commerce.Domain.Contracts.Models;
 using EPiServer.Reference.Commerce.Domain.Models;
+using EPiServer.Reference.Commerce.Domain.Models.ViewModels;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Models
 {

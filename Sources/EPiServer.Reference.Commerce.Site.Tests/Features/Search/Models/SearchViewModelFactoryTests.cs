@@ -90,7 +90,7 @@ namespace EPiServer.Reference.Commerce.Site.Tests.Features.Search.Models
             var result = _subject.Create<IContent>(null, formModel);
 
             // Assert
-            Assert.AreEqual<IEnumerable<ProductViewModel>>(_productViewModels, result.ProductViewModels);
+            Assert.AreEqual<IEnumerable<ProductViewModel>>(_productViewModels, result.ProductViewModels.Cast<ProductViewModel>());
         }
 
         [TestMethod]

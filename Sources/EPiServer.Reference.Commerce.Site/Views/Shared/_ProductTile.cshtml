@@ -1,5 +1,6 @@
-﻿@model EPiServer.Reference.Commerce.Domain.Contracts.Models.IProductModel
+﻿@using EPiServer.Reference.Commerce.Site.Features.Product.Models
+@model EPiServer.Reference.Commerce.Domain.Contracts.Models.IProductModel
 
 <div class="jsProductTile product-row__tile col-xs-12 col-sm-6 col-lg-4">
-    @Html.Partial("_Product", Model)
+    @Html.Partial("_Product", (ProductViewModel)Model)
 </div>

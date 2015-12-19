@@ -466,7 +466,7 @@
     <Compile Include="Features\Cart\Models\CartItem.cs" />
     <Compile Include="Features\Cart\Models\WishListMiniCartViewModel.cs" />
     <Compile Include="Features\Cart\Models\WishListViewModel.cs" />
-    <Compile Include="Features\Cart\Services\CartFactory.cs" />
+    <Compile Include="Features\Cart\Services\CartItemFactory.cs" />
     <Compile Include="Features\Checkout\Controllers\OrderConfirmationControllerBase.cs" />
     <Compile Include="Features\Checkout\Models\ShippingAddress.cs" />
     <Compile Include="Features\ErrorHandling\Controllers\ErrorHandlingController.cs" />
@@ -475,7 +475,7 @@
     <Compile Include="Features\Payment\Models\CashOnDeliveryViewModel.cs" />
     <Compile Include="Features\Payment\Models\PaymentMethodViewModelResolver.cs" />
     <Compile Include="Features\Payment\PaymentMethods\CashOnDeliveryPaymentMethod.cs" />
-    <Compile Include="Features\Product\Services\ProductFactory.cs" />
+    <Compile Include="Features\Product\Services\ProductModelFactory.cs" />
     <Compile Include="Features\ResetPassword\Pages\ResetPasswordPage.cs" />
     <Compile Include="Features\ResetPassword\ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="Features\Navigation\Controllers\NavigationController.cs" />
@@ -484,7 +484,6 @@
     <Compile Include="Features\ResetPassword\Controllers\ResetPasswordController.cs" />
     <Compile Include="Features\ResetPassword\ViewModels\ResetPasswordMailModel.cs" />
     <Compile Include="Features\Shared\Services\PromotionEntryService.cs" />
-    <Compile Include="Features\Shared\ViewModels\PageViewModel.cs" />
     <Compile Include="Features\Payment\Exceptions\PreProcessException.cs" />
     <Compile Include="Features\Payment\Models\PaymentViewModelBinder.cs" />
     <Compile Include="Features\Payment\Services\PaymentService.cs" />
@@ -947,6 +946,7 @@
   <ItemGroup>
     <Folder Include="Features\Login\Models\" />
     <Folder Include="Features\Shared\Models\" />
+    <Folder Include="Features\Shared\ViewModels\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

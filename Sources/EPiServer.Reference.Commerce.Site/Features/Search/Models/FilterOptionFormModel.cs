@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using System.Linq;
-using Mediachase.Search;
-using Mediachase.Commerce.Website.Search;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Search.Models
 {

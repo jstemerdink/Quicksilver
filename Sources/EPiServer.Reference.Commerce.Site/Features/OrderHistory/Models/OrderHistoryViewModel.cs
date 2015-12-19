@@ -1,6 +1,7 @@
 ﻿using EPiServer.Reference.Commerce.Site.Features.OrderHistory.Pages;
-using EPiServer.Reference.Commerce.Site.Features.Shared.ViewModels;
 using System.Collections.Generic;
+
+using EPiServer.Reference.Commerce.Domain.Models.ViewModels;
 
 namespace EPiServer.Reference.Commerce.Site.Features.OrderHistory.Models
 {

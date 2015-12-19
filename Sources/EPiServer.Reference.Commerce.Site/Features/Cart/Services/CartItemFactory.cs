@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 using EPiServer.Commerce.Catalog.ContentTypes;
 using EPiServer.Core;
@@ -8,6 +10,7 @@ using EPiServer.Reference.Commerce.Domain.Contracts.Models;
 using EPiServer.Reference.Commerce.Domain.Contracts.Services;
 using EPiServer.Reference.Commerce.Domain.Models;
 using EPiServer.Reference.Commerce.Extensions;
+using EPiServer.Reference.Commerce.Site.Features.Product.Models;
 using EPiServer.ServiceLocation;
 using EPiServer.Web.Routing;
 
@@ -15,33 +18,24 @@ using Mediachase.Commerce;
 using Mediachase.Commerce.Orders;
 using Mediachase.Commerce.Website.Helpers;
 
-namespace EPiServer.Reference.Commerce.Domain.Factories
+namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
 {
-    public abstract  class CartFactory : ICartFactory
+    [ServiceConfiguration(typeof(ICartFactory), Lifecycle = ServiceInstanceScope.Unique)]
+    public class CartItemFactory : Domain.Factories.CartItemFactory
     {
-        protected readonly IContentLoader _contentLoader;
-        protected readonly UrlResolver _urlResolver;
-        protected readonly IProductService _productService;
-
-        protected CartFactory(
-            IContentLoader contentLoader,
-            UrlResolver urlResolver,
-            IProductService productService
-            )
+        public CartItemFactory(IContentLoader contentLoader, UrlResolver urlResolver, IProductService productService)
+            : base(contentLoader, urlResolver, productService)
         {
-            this._contentLoader = contentLoader;
-            this._urlResolver = urlResolver;
-            this._productService = productService;
         }
 
-        public virtual ICartItem Create(LineItem lineItem, VariationContent variant, ProductContent product, CartHelper cartHelper)
+        public override ICartItem Create(LineItem lineItem, VariationContent variant, ProductContent product, CartHelper cartHelper)
         {
 
-            CartItem item = new CartItem
+            Models.CartItem item = new Models.CartItem
             {
                 Code = lineItem.Code,
                 DisplayName = lineItem.DisplayName,
-                ImageUrl = variant.GetAssets<IContentImage>(this._contentLoader, this._urlResolver).FirstOrDefault() ?? "",
+                ImageUrl = variant.GetAssets<IContentImage>(_contentLoader, _urlResolver).FirstOrDefault() ?? "",
                 ExtendedPrice = lineItem.ToMoney(lineItem.ExtendedPrice + lineItem.OrderLevelDiscountAmount),
                 PlacedPrice = lineItem.ToMoney(lineItem.PlacedPrice),
                 DiscountPrice = lineItem.ToMoney(Math.Round(((lineItem.PlacedPrice * lineItem.Quantity) - lineItem.Discounts.Cast<LineItemDiscount>().Sum(x => x.DiscountValue)) / lineItem.Quantity, 2)),
@@ -54,6 +48,15 @@ namespace EPiServer.Reference.Commerce.Domain.Factories
                     Displayname = x.DisplayMessage
                 })
             };
+
+            if (product is FashionProduct)
+            {
+                var fashionProduct = (FashionProduct)product;
+                var fashionVariant = (FashionVariant)variant;
+                item.Brand = fashionProduct.Brand;
+                var variations = _productService.GetVariations(fashionProduct);
+                item.AvailableSizes = variations.Cast<FashionVariant>().Where(x => x.Color == fashionVariant.Color).Select(x => x.Size);
+            }
 
             return item;
         }

@@ -16,7 +16,7 @@ using Mediachase.Commerce.Catalog;
 
 namespace EPiServer.Reference.Commerce.Domain.Factories
 {
-    public abstract class ProductFactory : IProductFactory
+    public abstract class ProductModelFactory : IProductFactory
     {
 
         protected readonly IPricingService _pricingService;
@@ -27,7 +27,7 @@ namespace EPiServer.Reference.Commerce.Domain.Factories
         protected readonly IContentLoader _contentLoader;
         protected readonly UrlResolver _urlResolver;
 
-        protected ProductFactory(
+        protected ProductModelFactory(
            IPricingService pricingService,
            AppContextFacade appContext,
         IPromotionService promotionService,

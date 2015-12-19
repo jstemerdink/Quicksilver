@@ -30,7 +30,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Search.Controllers
 
         protected IEnumerable<ProductViewModel> GetProductModels(NodeContent currentContent)
         {
-            return GetSearchModel(currentContent, 3).ProductViewModels;
+            return GetSearchModel(currentContent, 3).ProductViewModels.Cast<ProductViewModel>();
         }
 
         protected virtual SearchViewModel<NodeContent> GetSearchModel(NodeContent currentContent, int pageSize)

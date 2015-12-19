@@ -20,9 +20,9 @@ using ProductViewModel = EPiServer.Reference.Commerce.Site.Features.Product.Mode
 namespace EPiServer.Reference.Commerce.Site.Features.Product.Services
 {
     [ServiceConfiguration(typeof(IProductFactory), Lifecycle = ServiceInstanceScope.Unique)]
-    public class ProductFactory : Domain.Factories.ProductFactory
+    public class ProductModelFactory : Domain.Factories.ProductModelFactory
     {
-        public ProductFactory(IPricingService pricingService, AppContextFacade appContext, IPromotionService promotionService, ICurrentMarket currentMarket, ICurrencyService currencyService, IContentLoader contentLoader, UrlResolver urlResolver)
+        public ProductModelFactory(IPricingService pricingService, AppContextFacade appContext, IPromotionService promotionService, ICurrentMarket currentMarket, ICurrencyService currencyService, IContentLoader contentLoader, UrlResolver urlResolver)
             : base(pricingService, appContext, promotionService, currentMarket, currencyService, contentLoader, urlResolver)
         {
         }
