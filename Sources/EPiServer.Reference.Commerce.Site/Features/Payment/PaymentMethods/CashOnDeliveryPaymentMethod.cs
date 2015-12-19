@@ -4,6 +4,8 @@ using Mediachase.Commerce.Website;
 using System;
 using System.Linq;
 
+using EPiServer.Reference.Commerce.Domain.Models;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Payment.PaymentMethods
 {
     public class CashOnDeliveryPaymentMethod : PaymentMethodBase, IPaymentOption

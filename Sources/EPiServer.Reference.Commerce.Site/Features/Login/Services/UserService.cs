@@ -10,6 +10,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using EPiServer.Reference.Commerce.Domain.Facades;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Login.Services
 {
     public class UserService : IDisposable

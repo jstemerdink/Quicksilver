@@ -2,14 +2,22 @@
 using EPiServer.Reference.Commerce.Site.Features.Cart.Controllers;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Models;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Services;
-using EPiServer.Reference.Commerce.Site.Features.Product.Services;
 using EPiServer.Reference.Commerce.Site.Features.Start.Pages;
 using FluentAssertions;
 using Mediachase.Commerce;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.Mvc;
+
+using EPiServer.Commerce.Catalog.Linking;
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+using EPiServer.Reference.Commerce.Domain.Models;
+
+using Mediachase.Commerce.Catalog;
+
+using CartItem = EPiServer.Reference.Commerce.Site.Features.Cart.Models.CartItem;
 
 namespace EPiServer.Reference.Commerce.Site.Tests.Features.Cart.Controllers
 {
@@ -94,6 +102,11 @@ namespace EPiServer.Reference.Commerce.Site.Tests.Features.Cart.Controllers
         Mock<IProductService> _ProductServiceMock;
         Mock<ICartService> _wishListServiceMock;
 
+        Mock<LinksRepository> _linksRepository;
+        Mock<IRelationRepository> _relationRepository ;
+        Mock<CultureInfo> _preferredCulture;
+        Mock<ReferenceConverter> _referenceConverter;
+
         [TestInitialize]
         public void Setup()
         {
@@ -102,6 +115,10 @@ namespace EPiServer.Reference.Commerce.Site.Tests.Features.Cart.Controllers
             _cartServiceMock = new Mock<ICartService>();
             _ProductServiceMock = new Mock<IProductService>();
             _wishListServiceMock = new Mock<ICartService>();
+            _linksRepository = new Mock<LinksRepository>();
+            _relationRepository = new Mock<IRelationRepository>();
+            _preferredCulture = new Mock<CultureInfo>();
+            _referenceConverter = new Mock<ReferenceConverter>();
 
             _contentLoaderMock.Setup(c => c.Get<StartPage>(ContentReference.StartPage))
                 .Returns(new StartPage
@@ -133,7 +150,7 @@ namespace EPiServer.Reference.Commerce.Site.Tests.Features.Cart.Controllers
             _cartServiceMock.Setup(x => x.RemoveLineItem(It.IsAny<string>())).Verifiable();
             _cartServiceMock.Setup(x => x.ChangeQuantity(It.IsAny<string>(), It.IsAny<int>())).Verifiable();
             _wishListServiceMock.Setup(x => x.RemoveLineItem(It.IsAny<string>())).Verifiable();
-            _subject = new CartController(_contentLoaderMock.Object, _cartServiceMock.Object, _wishListServiceMock.Object, _ProductServiceMock.Object);
+            _subject = new CartController(_contentLoaderMock.Object, _cartServiceMock.Object, _wishListServiceMock.Object, _ProductServiceMock.Object, _linksRepository.Object, _relationRepository.Object, _preferredCulture.Object, _referenceConverter.Object);
         }
     }
 }

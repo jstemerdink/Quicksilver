@@ -7,6 +7,8 @@ using Mediachase.Commerce.Customers;
 using System.Linq;
 using System.Web.Mvc;
 
+using EPiServer.Reference.Commerce.Domain.Facades;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Navigation.Controllers
 {
     public class HeaderController : Controller

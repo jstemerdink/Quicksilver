@@ -1,24 +1,3 @@
-using EPiServer.Commerce.Routing;
-using EPiServer.Editor;
-using EPiServer.Framework;
-using EPiServer.Framework.Initialization;
-using EPiServer.Framework.Web;
-using EPiServer.Globalization;
-using EPiServer.Reference.Commerce.Shared.Models.Identity;
-using EPiServer.Reference.Commerce.Site.Features.Market.Services;
-using EPiServer.Reference.Commerce.Site.Infrastructure.WebApi;
-using EPiServer.Security;
-using EPiServer.ServiceLocation;
-using EPiServer.Web;
-using Mediachase.Commerce;
-using Mediachase.Commerce.Core;
-using Mediachase.Commerce.Security;
-using Mediachase.Commerce.Website.Helpers;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
-using Microsoft.Owin.Security;
-using Newtonsoft.Json;
-using StructureMap.Web;
 using System;
 using System.Globalization;
 using System.Web;
@@ -26,6 +5,29 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.WebPages;
+using EPiServer.Commerce.Routing;
+using EPiServer.Framework;
+using EPiServer.Framework.Initialization;
+using EPiServer.Framework.Web;
+using EPiServer.Globalization;
+using EPiServer.Reference.Commerce.Shared.Models.Identity;
+using EPiServer.Reference.Commerce.Site.Infrastructure.WebApi;
+using EPiServer.Security;
+using EPiServer.ServiceLocation;
+using EPiServer.Web;
+using Mediachase.Commerce;
+using Mediachase.Commerce.Orders;
+using Mediachase.Commerce.Security;
+using Mediachase.Commerce.Website.Helpers;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
+using Microsoft.Owin.Security;
+using Newtonsoft.Json;
+using EPiServer.Editor;
+using EPiServer.Reference.Commerce.Domain.Models;
+using EPiServer.Reference.Commerce.Domain.Services;
+using EPiServer.Reference.Commerce.Site.Features.Market.Services;
+using StructureMap.Web;
 
 namespace EPiServer.Reference.Commerce.Site.Infrastructure
 {
@@ -75,7 +77,6 @@ namespace EPiServer.Reference.Commerce.Site.Infrastructure
                 c.For<IAuthenticationManager>().Use(() => owinContextFunc().Authentication);
                 c.For<IOwinContext>().Use(() => owinContextFunc());
                 c.For<IModelBinderProvider>().Use<ModelBinderProvider>();
-                c.For<SiteContext>().HybridHttpOrThreadLocalScoped().Use<CustomCurrencySiteContext>();
             });
 
             DependencyResolver.SetResolver(new StructureMapDependencyResolver(context.Container));

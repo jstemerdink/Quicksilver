@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
 using EPiServer.Web.Mvc.Html;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Models;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Services;
@@ -46,14 +48,14 @@ namespace EPiServer.Reference.Commerce.Site.Features.Navigation.Controllers
                 {
                     ItemCount = _cartService.GetLineItemsTotalQuantity(),
                     CheckoutPage = startPage.CheckoutPage,
-                    CartItems = _cartService.GetCartItems(),
+                    CartItems = _cartService.GetCartItems().Cast<CartItem>(),
                     Total = _cartService.GetSubTotal()
                 },
                 WishListMiniCart = new WishListMiniCartViewModel
                 {
                     ItemCount = _wishListService.GetLineItemsTotalQuantity(),
                     WishListPage = startPage.WishListPage,
-                    CartItems = _wishListService.GetCartItems(),
+                    CartItems = _wishListService.GetCartItems().Cast<CartItem>(),
                     Total = _wishListService.GetSubTotal()
                 }
             };

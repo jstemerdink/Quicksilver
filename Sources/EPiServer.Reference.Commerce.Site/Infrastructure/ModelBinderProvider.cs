@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
+using EPiServer.Reference.Commerce.Domain.Contracts.Models;
+
 namespace EPiServer.Reference.Commerce.Site.Infrastructure
 {
     public class ModelBinderProvider : IModelBinderProvider

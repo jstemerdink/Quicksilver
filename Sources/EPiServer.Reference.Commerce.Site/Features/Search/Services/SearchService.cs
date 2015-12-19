@@ -21,6 +21,8 @@ using System.Linq;
 using System.Text;
 using System.Web.Helpers;
 
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Search.Services
 {
     [ServiceConfiguration(typeof(ISearchService), Lifecycle = ServiceInstanceScope.PerRequest)]

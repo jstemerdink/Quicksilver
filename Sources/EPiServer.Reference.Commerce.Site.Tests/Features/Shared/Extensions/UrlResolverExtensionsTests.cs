@@ -16,7 +16,7 @@ namespace EPiServer.Reference.Commerce.Site.Tests.Features.Shared.Extensions
             var expectedUrlReferrer = new Uri("https://github.com/episerver/Quicksilver");
             _mockHttpRequestBase.Setup(x => x.UrlReferrer).Returns(expectedUrlReferrer);
 
-            var result = Site.Features.Shared.Extensions.UrlResolverExtensions.GetUrl(_mockUrlResolver.Object, _mockHttpRequestBase.Object, null, "en");
+            var result = Commerce.Extensions.UrlResolverExtensions.GetUrl(_mockUrlResolver.Object, _mockHttpRequestBase.Object, null, "en");
             Assert.AreEqual<string>(expectedUrlReferrer.PathAndQuery, result);
         }
 
@@ -25,7 +25,7 @@ namespace EPiServer.Reference.Commerce.Site.Tests.Features.Shared.Extensions
         {
             _mockHttpRequestBase.Setup(x => x.UrlReferrer).Returns((Uri)null);
 
-            var result = Site.Features.Shared.Extensions.UrlResolverExtensions.GetUrl(_mockUrlResolver.Object, _mockHttpRequestBase.Object, null, "en");
+            var result = Commerce.Extensions.UrlResolverExtensions.GetUrl(_mockUrlResolver.Object, _mockHttpRequestBase.Object, null, "en");
             Assert.AreEqual<string>("/", result);
         }
 
@@ -35,7 +35,7 @@ namespace EPiServer.Reference.Commerce.Site.Tests.Features.Shared.Extensions
             var expectedUrlReferrer = new Uri("https://github.com/episerver/Quicksilver");
             _mockHttpRequestBase.Setup(x => x.UrlReferrer).Returns(expectedUrlReferrer);
 
-            var result = Site.Features.Shared.Extensions.UrlResolverExtensions.GetUrl(_mockUrlResolver.Object, _mockHttpRequestBase.Object, ContentReference.EmptyReference, "en");
+            var result = Commerce.Extensions.UrlResolverExtensions.GetUrl(_mockUrlResolver.Object, _mockHttpRequestBase.Object, ContentReference.EmptyReference, "en");
             Assert.AreEqual<string>(expectedUrlReferrer.PathAndQuery, result);
         }
 
@@ -49,7 +49,7 @@ namespace EPiServer.Reference.Commerce.Site.Tests.Features.Shared.Extensions
 
             _mockUrlResolver.Setup(x => x.GetUrl(contentLink, language)).Returns(expectedUrl);
 
-            var result = Site.Features.Shared.Extensions.UrlResolverExtensions.GetUrl(_mockUrlResolver.Object, _mockHttpRequestBase.Object, contentLink, language);
+            var result = Commerce.Extensions.UrlResolverExtensions.GetUrl(_mockUrlResolver.Object, _mockHttpRequestBase.Object, contentLink, language);
             Assert.AreEqual<string>(expectedUrl, result);
         }
 

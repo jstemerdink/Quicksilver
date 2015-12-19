@@ -10,6 +10,8 @@ using Mediachase.Commerce.Orders;
 using System;
 using System.Web.Mvc;
 
+using EPiServer.Reference.Commerce.Domain.Facades;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
 {
     public class OrderConfirmationController : OrderConfirmationControllerBase<OrderConfirmationPage>

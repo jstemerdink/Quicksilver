@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using EPiServer.Reference.Commerce.Domain.Facades;
 using EPiServer.Reference.Commerce.Site.Infrastructure.Facades;
 
 namespace EPiServer.Reference.Commerce.Site.Tests.TestSupport.Fakes

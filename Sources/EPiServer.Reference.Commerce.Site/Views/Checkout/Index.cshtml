@@ -1,4 +1,5 @@
 ﻿@using EPiServer.Reference.Commerce.Site.Features.Shared.Extensions
+@using EPiServer.Reference.Commerce.Extensions
 @model EPiServer.Reference.Commerce.Site.Features.Checkout.Models.CheckoutViewModel
 @{
     if (Request.IsAjaxRequest())
@@ -41,18 +42,10 @@
         </div>
     </div>
 
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            @foreach (var item in ViewData.ModelState)
+@if (!String.IsNullOrEmpty(Model.ErrorMessage))
             {
-                foreach (var error in item.Value.Errors)
-                {
-                    <p>@error.ErrorMessage</p>
-                }
+                <div class="alert alert-danger">@Model.ErrorMessage</div>
             }
-        </div>
-    }
 
     @using (Html.BeginForm("Purchase", "Checkout", FormMethod.Post, new { @class = "jsCheckoutForm", @data_UpdateUrl = Url.Action("Update", null, null) }))
     {

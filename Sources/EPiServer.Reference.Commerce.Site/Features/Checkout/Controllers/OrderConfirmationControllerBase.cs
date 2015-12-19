@@ -5,7 +5,6 @@ using EPiServer.Reference.Commerce.Site.Features.Checkout.Models;
 using EPiServer.Reference.Commerce.Site.Features.Checkout.Pages;
 using EPiServer.Reference.Commerce.Site.Features.Checkout.Services;
 using EPiServer.Reference.Commerce.Site.Features.Shared.Extensions;
-using EPiServer.Reference.Commerce.Site.Features.Shared.Models;
 using EPiServer.Reference.Commerce.Site.Infrastructure.Facades;
 using EPiServer.Web.Mvc;
 using EPiServer.Web.Mvc.Html;
@@ -14,6 +13,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+
+using EPiServer.Reference.Commerce.Domain.Contracts.Models;
+using EPiServer.Reference.Commerce.Domain.Facades;
+using EPiServer.Reference.Commerce.Domain.Models;
+using EPiServer.Reference.Commerce.Extensions;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
 {
@@ -49,7 +53,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
                 Created = order.Created,
                 Items = form.LineItems,
                 BillingAddress = new Address(),
-                ShippingAddresses = new List<Address>(),
+                ShippingAddresses = new List<IAddress>(),
                 ContactId = _customerContext.CurrentContactId,
                 Payments = form.Payments,
                 GroupId = order.OrderGroupId,

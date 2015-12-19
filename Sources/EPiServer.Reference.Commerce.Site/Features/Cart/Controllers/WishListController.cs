@@ -1,14 +1,26 @@
-﻿using EPiServer.Core;
+﻿using System;
+
+using EPiServer.Core;
 using EPiServer.Framework.Localization;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Models;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Pages;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Services;
-using EPiServer.Reference.Commerce.Site.Features.Product.Services;
 using EPiServer.Reference.Commerce.Site.Features.Start.Pages;
 using EPiServer.Web.Mvc;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+
+using EPiServer.Commerce.Catalog.Linking;
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+using EPiServer.Reference.Commerce.Domain.Facades;
+using EPiServer.Reference.Commerce.Site.Features.Cart.Extensions;
+using EPiServer.Reference.Commerce.Site.Features.Product.Models;
+using EPiServer.Web.Routing;
+
+using Mediachase.Commerce;
+using Mediachase.Commerce.Catalog;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
 {
@@ -19,18 +31,35 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
         private readonly ICartService _cartService;
         private readonly LocalizationService _localizationService;
         private readonly IProductService _productService;
-        
+
+        private readonly LinksRepository _linksRepository;
+        private readonly IRelationRepository _relationRepository;
+        private readonly CultureInfo _preferredCulture;
+        private readonly ReferenceConverter _referenceConverter;
+
+        private readonly CartHelper _cartHelper;
+
         public WishListController(
             IContentLoader contentLoader,
             ICartService cartService,
             LocalizationService localizationService,
-            IProductService productService)
+            IProductService productService,
+            LinksRepository linksRepository,
+            IRelationRepository relationRepository,
+            Func<CultureInfo> preferredCulture,
+            ReferenceConverter referenceConverter)
         {
             _contentLoader = contentLoader;
             _localizationService = localizationService;
             _cartService = cartService;
             _productService = productService;
             _cartService.InitializeAsWishList();
+            _linksRepository = linksRepository;
+            _relationRepository = relationRepository;
+            _preferredCulture = preferredCulture();
+            _referenceConverter = referenceConverter;
+
+            _cartHelper = new CartHelper(contentLoader, linksRepository, relationRepository, preferredCulture, referenceConverter);
         }
 
         [HttpGet]
@@ -40,7 +69,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
             {
                 ItemCount = _cartService.GetLineItemsTotalQuantity(),
                 CurrentPage = currentPage,
-                CartItems = _cartService.GetCartItems(),
+                CartItems = _cartService.GetCartItems().Cast<CartItem>(),
                 Total = _cartService.GetSubTotal()
             };
 
@@ -54,7 +83,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
             {
                 ItemCount = _cartService.GetLineItemsTotalQuantity(),
                 WishListPage = _contentLoader.Get<StartPage>(ContentReference.StartPage).WishListPage,
-                CartItems = _cartService.GetCartItems(),
+                CartItems = _cartService.GetCartItems().Cast<CartItem>(),
                 Total = _cartService.GetTotal()
             };
 
@@ -90,7 +119,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
                 }
                 else
                 {
-                    var newCode = _productService.GetSiblingVariantCodeBySize(code, newSize);
+                    var newCode = _cartHelper.GetSiblingVariantCodeBySize(code, newSize);
                     _cartService.UpdateLineItemSku(code, newCode, quantity);
                 }
             }
@@ -110,5 +139,9 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
 
             return RedirectToAction("Index", new {Node = startPage.WishListPage});
         }
+
+        
     }
+
+
 }

@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using EPiServer.Reference.Commerce.Domain.Models;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Payment.PaymentMethods
 {
     public class GenericCreditCardPaymentMethod : PaymentMethodBase, IPaymentOption, IDataErrorInfo

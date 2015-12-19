@@ -2,6 +2,7 @@
 using EPiServer.Commerce.Catalog.ContentTypes;
 using EPiServer.Commerce.Catalog.Linking;
 using EPiServer.Core;
+using EPiServer.Reference.Commerce.Extensions;
 using EPiServer.Reference.Commerce.Site.Features.Shared.Extensions;
 using EPiServer.Web.Routing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

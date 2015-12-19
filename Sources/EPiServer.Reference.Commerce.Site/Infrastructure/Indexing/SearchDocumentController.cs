@@ -19,6 +19,9 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+using EPiServer.Reference.Commerce.Domain.Facades;
+
 namespace EPiServer.Reference.Commerce.Site.Infrastructure.Indexing
 {
     [RoutePrefix("referenceapi")]

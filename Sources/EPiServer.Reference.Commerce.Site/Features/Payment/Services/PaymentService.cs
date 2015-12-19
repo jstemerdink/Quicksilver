@@ -6,6 +6,8 @@ using Mediachase.Commerce.Website.Helpers;
 using System;
 using System.Linq;
 
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Payment.Services
 {
     [ServiceConfiguration(typeof(IPaymentService), Lifecycle = ServiceInstanceScope.Singleton)]

@@ -1,6 +1,8 @@
 ﻿using System.Web.Mvc;
 using EPiServer.Commerce.Catalog.ContentTypes;
 using EPiServer.Framework.DataAnnotations;
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+using EPiServer.Reference.Commerce.Site.Features.Product.Models;
 using EPiServer.Web.Mvc;
 using EPiServer.Reference.Commerce.Site.Features.Product.Services;
 
@@ -19,7 +21,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Product.Controllers
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public override ActionResult Index(VariationContent currentContent)
         {
-            return PartialView("_Product", _productService.GetProductViewModel(currentContent));
+            return PartialView("_Product", (ProductViewModel)_productService.GetProductViewModel(currentContent));
         }
     }
 }

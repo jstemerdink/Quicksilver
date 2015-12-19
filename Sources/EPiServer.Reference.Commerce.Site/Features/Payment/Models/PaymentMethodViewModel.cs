@@ -2,6 +2,8 @@
 using Mediachase.Commerce.Website;
 using System;
 
+using EPiServer.Reference.Commerce.Domain.Contracts.Models;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Payment.Models
 {
     public class PaymentMethodViewModel<T> : IPaymentMethodViewModel<T> where T : IPaymentOption

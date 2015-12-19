@@ -6,6 +6,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using System;
 
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+
 namespace EPiServer.Reference.Commerce.Shared.Models.Identity
 {
     public class ApplicationUserManager : UserManager<ApplicationUser>

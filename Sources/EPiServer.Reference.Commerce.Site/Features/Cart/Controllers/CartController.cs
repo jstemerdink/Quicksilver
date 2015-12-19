@@ -1,11 +1,20 @@
-﻿using EPiServer.Core;
+﻿using System;
+
+using EPiServer.Core;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Models;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Services;
-using EPiServer.Reference.Commerce.Site.Features.Product.Services;
 using EPiServer.Reference.Commerce.Site.Features.Start.Pages;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+
+using EPiServer.Commerce.Catalog.Linking;
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+using EPiServer.Reference.Commerce.Site.Features.Cart.Extensions;
+using EPiServer.Reference.Commerce.Site.Features.Product.Models;
+
+using Mediachase.Commerce.Catalog;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
 {
@@ -16,16 +25,33 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
         private readonly ICartService _wishListService;
         private readonly IProductService _productService;
 
+        private readonly LinksRepository _linksRepository;
+        private readonly IRelationRepository _relationRepository;
+        private readonly CultureInfo _preferredCulture;
+        private readonly ReferenceConverter _referenceConverter;
+
+        private readonly CartHelper _cartHelper;
+
         public CartController(IContentLoader contentLoader,
                               ICartService cartService,
                               ICartService wishListService,
-                              IProductService productService)
+                              IProductService productService,
+            LinksRepository linksRepository,
+            IRelationRepository relationRepository,
+            Func<CultureInfo> preferredCulture,
+            ReferenceConverter referenceConverter)
         {
             _contentLoader = contentLoader;
             _cartService = cartService;
             _wishListService = wishListService;
             _productService = productService;
             _wishListService.InitializeAsWishList();
+            _linksRepository = linksRepository;
+            _relationRepository = relationRepository;
+            _preferredCulture = preferredCulture();
+            _referenceConverter = referenceConverter;
+
+            _cartHelper = new CartHelper(contentLoader, linksRepository, relationRepository, preferredCulture, referenceConverter);
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
@@ -35,7 +61,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
             {
                 ItemCount = _cartService.GetLineItemsTotalQuantity(),
                 CheckoutPage = _contentLoader.Get<StartPage>(ContentReference.StartPage).CheckoutPage,
-                CartItems = _cartService.GetCartItems(),
+                CartItems = _cartService.GetCartItems().Cast<CartItem>(),
                 Total = _cartService.GetSubTotal()
             };
             
@@ -45,7 +71,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult LargeCart()
         {
-            var items = _cartService.GetCartItems().ToList();
+            var items = _cartService.GetCartItems().Cast<CartItem>().ToList();
             var viewModel = new LargeCartViewModel
             {
                 CartItems = items,
@@ -86,7 +112,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
                 }
                 else
                 {
-                    var newCode = _productService.GetSiblingVariantCodeBySize(code, newSize);
+                    var newCode = _cartHelper.GetSiblingVariantCodeBySize(code, newSize);
                     _cartService.UpdateLineItemSku(code, newCode, quantity);
                 }
             }
@@ -97,5 +123,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Controllers
 
             return MiniCartDetails();
         }
+
+        
     }
 }

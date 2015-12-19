@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.Mvc;
 
+using EPiServer.Reference.Commerce.Domain.Models.ViewModels;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Payment.Models
 {
     public class GenericCreditCardViewModel : PaymentMethodViewModel<GenericCreditCardPaymentMethod>

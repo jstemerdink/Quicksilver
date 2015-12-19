@@ -1,11 +1,13 @@
 using EPiServer.Core;
 using EPiServer.Reference.Commerce.Site.Features.Registration.Models;
-using EPiServer.Reference.Commerce.Site.Features.Shared.Models;
 using EPiServer.Reference.Commerce.Site.Features.Shared.ViewModels;
 using Mediachase.Commerce;
 using Mediachase.Commerce.Orders;
 using System;
 using System.Collections.Generic;
+
+using EPiServer.Reference.Commerce.Domain.Contracts.Models;
+using EPiServer.Reference.Commerce.Domain.Models;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Models
 {
@@ -16,7 +18,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Models
         public OrderConfirmationRegistrationFormModel RegistrationFormModel { get; set; }
         public IEnumerable<LineItem> Items { get; set; }
         public Address BillingAddress { get; set; }
-        public IList<Address> ShippingAddresses { get; set; }
+        public IList<IAddress> ShippingAddresses { get; set; }
         public IEnumerable<Mediachase.Commerce.Orders.Payment> Payments { get; set; }
         public Guid ContactId { get; set; }
         public DateTime Created { get; set; }

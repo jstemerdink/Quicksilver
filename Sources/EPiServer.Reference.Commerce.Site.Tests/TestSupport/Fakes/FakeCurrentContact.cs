@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using EPiServer.Reference.Commerce.Domain.Facades;
 using EPiServer.Reference.Commerce.Site.Infrastructure.Facades;
 using Mediachase.BusinessFoundation.Data;
 using Mediachase.Commerce.Customers;

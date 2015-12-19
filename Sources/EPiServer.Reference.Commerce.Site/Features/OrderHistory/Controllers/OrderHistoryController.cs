@@ -4,7 +4,6 @@ using EPiServer.Reference.Commerce.Site.Features.AddressBook.Services;
 using EPiServer.Reference.Commerce.Site.Features.Checkout.Models;
 using EPiServer.Reference.Commerce.Site.Features.OrderHistory.Models;
 using EPiServer.Reference.Commerce.Site.Features.OrderHistory.Pages;
-using EPiServer.Reference.Commerce.Site.Features.Shared.Models;
 using EPiServer.Reference.Commerce.Site.Infrastructure.Facades;
 using EPiServer.Web.Mvc;
 using Mediachase.Commerce.Catalog;
@@ -13,6 +12,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+
+using EPiServer.Reference.Commerce.Domain.Contracts.Models;
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+using EPiServer.Reference.Commerce.Domain.Facades;
+using EPiServer.Reference.Commerce.Domain.Models;
 
 namespace EPiServer.Reference.Commerce.Site.Features.OrderHistory.Controllers
 {
@@ -66,7 +70,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.OrderHistory.Controllers
                         Variation = variations.FirstOrDefault(y => y.Code == lineItem.Code)
                     }),
                     BillingAddress = new Address(),
-                    ShippingAddresses = new List<Address>()
+                    ShippingAddresses = new List<IAddress>()
                 };
 
                 // Identify the id for all shipping addresses.

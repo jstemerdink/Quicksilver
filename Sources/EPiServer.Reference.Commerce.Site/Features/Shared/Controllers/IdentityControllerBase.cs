@@ -7,6 +7,8 @@ using EPiServer.Web.Mvc;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
+using EPiServer.Reference.Commerce.Extensions;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Shared.Controllers
 {
     /// <summary>

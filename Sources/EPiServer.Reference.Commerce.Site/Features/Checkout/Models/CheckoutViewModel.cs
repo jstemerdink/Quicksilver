@@ -4,8 +4,9 @@ using EPiServer.Reference.Commerce.Site.Features.Checkout.Pages;
 using EPiServer.Reference.Commerce.Site.Features.Payment.Models;
 using EPiServer.Reference.Commerce.Site.Features.Start.Pages;
 using Mediachase.Commerce.Website;
-using EPiServer.Reference.Commerce.Site.Features.Shared.Models;
 using System.Web.Mvc;
+
+using EPiServer.Reference.Commerce.Domain.Contracts.Models;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Models
 {
@@ -18,7 +19,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Models
         /// <summary>
         /// Gets or sets all available payment methods that the customer can choose from.
         /// </summary>
-        public IEnumerable<PaymentMethodViewModel<IPaymentOption>> PaymentMethodViewModels { get; set; }
+        public IEnumerable<IPaymentMethodViewModel<IPaymentOption>> PaymentMethodViewModels { get; set; }
 
         /// <summary>
         /// Gets ors sets all available shipping method that can be associated to a shipping address.
@@ -51,5 +52,6 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Models
         /// Gets or sets whether the shipping address should be the same as the billing address.
         /// </summary>
         public bool UseBillingAddressForShipment { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

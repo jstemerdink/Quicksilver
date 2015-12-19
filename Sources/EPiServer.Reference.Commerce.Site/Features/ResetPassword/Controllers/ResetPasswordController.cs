@@ -1,8 +1,6 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using EPiServer.Core;
 using EPiServer.Editor;
-using EPiServer.Framework.Localization;
 using EPiServer.Reference.Commerce.Shared.Models;
 using EPiServer.Reference.Commerce.Shared.Models.Identity;
 using EPiServer.Reference.Commerce.Shared.Services;
@@ -13,8 +11,9 @@ using EPiServer.Reference.Commerce.Site.Features.Login.Controllers;
 using System.Threading.Tasks;
 using EPiServer.Reference.Commerce.Site.Features.ResetPassword.ViewModels;
 using System.Collections.Specialized;
+
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
 using EPiServer.Reference.Commerce.Site.Features.Shared.Services;
-using EPiServer.Reference.Commerce.Site.Features.Shared.Models;
 using EPiServer.Reference.Commerce.Site.Features.Shared.Controllers;
 using Microsoft.Owin;
 using EPiServer.Reference.Commerce.Site.Features.Login.Services;
@@ -25,20 +24,12 @@ namespace EPiServer.Reference.Commerce.Site.Features.ResetPassword.Controllers
     {
         private readonly IContentLoader _contentLoader;
         private readonly IMailService _mailService;
-        private readonly LocalizationService _localizationService;
 
-        public ResetPasswordController(ApplicationSignInManager signinManager, 
-            ApplicationUserManager userManager,
-            UserService userService, 
-            IContentLoader contentLoader, 
-            IMailService mailService,
-            LocalizationService localizationService)
-
+        public ResetPasswordController(ApplicationSignInManager signinManager, ApplicationUserManager userManager, UserService userService, IContentLoader contentLoader, IMailService mailService)
             : base(signinManager, userManager, userService)
         {
             _contentLoader = contentLoader;
             _mailService = mailService;
-            _localizationService = localizationService;
         }
 
         [AllowAnonymous]
@@ -66,16 +57,9 @@ namespace EPiServer.Reference.Commerce.Site.Features.ResetPassword.Controllers
             }
 
             var startPage = _contentLoader.Get<StartPage>(ContentReference.StartPage);
-            var body = _mailService.GetHtmlBodyForMail(startPage.ResetPasswordMail, new NameValueCollection(), language);
+            NameValueCollection queryParameters = new NameValueCollection { { "id", user.Id } };
+            string body = _mailService.GetHtmlBodyForMail(startPage.ResetPasswordMail, queryParameters, language);
             var mailPage = _contentLoader.Get<MailBasePage>(startPage.ResetPasswordMail);
-            var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-            var url = Url.Action("ResetPassword", "ResetPassword", new { userId = user.Id, code, langauge = language }, Request.Url.Scheme);
-
-            body = body.Replace("[MailUrl]", 
-                String.Format("{0}<a href=\"{1}\">{2}</a>", 
-                    _localizationService.GetString("/ResetPassword/Mail/Text"),
-                    url,
-                    _localizationService.GetString("/ResetPassword/Mail/Link")));
 
             await UserManager.SendEmailAsync(user.Id, mailPage.MailTitle, body);
 

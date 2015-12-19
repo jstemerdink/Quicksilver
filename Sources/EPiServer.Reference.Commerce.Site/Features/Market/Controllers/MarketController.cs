@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using EPiServer.Core;
+using EPiServer.Reference.Commerce.Domain.Services;
 using EPiServer.Reference.Commerce.Site.Features.Market.Models;
-using EPiServer.Reference.Commerce.Site.Features.Shared.Extensions;
+using EPiServer.Reference.Commerce.Extensions;
 using EPiServer.Web.Routing;
 using Mediachase.Commerce;
 using Mediachase.Commerce.Markets;

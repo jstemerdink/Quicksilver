@@ -1,3 +1,4 @@
+using EPiServer.Reference.Commerce.Domain.Facades;
 using EPiServer.Reference.Commerce.Site.Infrastructure.Facades;
 
 namespace EPiServer.Reference.Commerce.Site.Tests.TestSupport.Fakes
@@ -11,7 +12,7 @@ namespace EPiServer.Reference.Commerce.Site.Tests.TestSupport.Fakes
             _currentContact = currentContact;
         }
 
-        public override CurrentContactFacade CurrentContact 
+        public new CurrentContactFacade CurrentContact 
         {
             get { return _currentContact; }
         }

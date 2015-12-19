@@ -22,6 +22,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+using EPiServer.Reference.Commerce.Domain.Facades;
+
 namespace EPiServer.Reference.Commerce.Site.Infrastructure.Indexing
 {
     public class CatalogIndexer : CatalogIndexBuilder

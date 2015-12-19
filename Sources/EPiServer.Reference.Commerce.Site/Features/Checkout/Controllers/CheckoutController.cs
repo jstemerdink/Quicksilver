@@ -1,16 +1,11 @@
 ﻿using EPiServer.Core;
 using EPiServer.Framework.Localization;
-using EPiServer.Reference.Commerce.Shared.Services;
-using EPiServer.Reference.Commerce.Site.Features.AddressBook.Services;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Services;
 using EPiServer.Reference.Commerce.Site.Features.Checkout.Models;
 using EPiServer.Reference.Commerce.Site.Features.Checkout.Pages;
-using EPiServer.Reference.Commerce.Site.Features.Checkout.Services;
 using EPiServer.Reference.Commerce.Site.Features.Market.Services;
-using EPiServer.Reference.Commerce.Site.Features.Payment.Exceptions;
 using EPiServer.Reference.Commerce.Site.Features.Payment.Models;
 using EPiServer.Reference.Commerce.Site.Features.Payment.PaymentMethods;
-using EPiServer.Reference.Commerce.Site.Features.Payment.Services;
 using EPiServer.Reference.Commerce.Site.Features.Shared.Extensions;
 using EPiServer.Reference.Commerce.Site.Features.Shared.Services;
 using EPiServer.Reference.Commerce.Site.Features.Start.Pages;
@@ -29,6 +24,16 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+
+using EPiServer.Reference.Commerce.Domain.Contracts.Models;
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+using EPiServer.Reference.Commerce.Domain.Facades;
+using EPiServer.Reference.Commerce.Domain.Models;
+using EPiServer.Reference.Commerce.Domain.Models.ViewModels;
+using EPiServer.Reference.Commerce.Extensions;
+
+using OrderDiscountModel = EPiServer.Reference.Commerce.Site.Features.Checkout.Models.OrderDiscountModel;
+using PreProcessException = EPiServer.Reference.Commerce.Site.Features.Payment.Exceptions.PreProcessException;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
 {
@@ -102,7 +107,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
         /// <param name="shippingMethodId">The default shipping method id.</param>
         /// <param name="customer">The currently logged on user. Will be null for anonymous quests.</param>
         /// <returns>A new CheckoutViewModel.</returns>
-        private CheckoutViewModel CreateCheckoutViewModel(PaymentMethodViewModel<IPaymentOption> selectedPaymentMethod,
+        private CheckoutViewModel CreateCheckoutViewModel(IPaymentMethodViewModel<IPaymentOption> selectedPaymentMethod,
                                                           Guid shippingMethodId,
                                                           CustomerContact customer)
         {
@@ -148,24 +153,16 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
         {
             var shipment = _checkoutService.CreateShipment();
             var shippingRates = _checkoutService.GetShippingRates(shipment);
-            var shippingMethods = GetShippingMethods(shippingRates);
-            var selectedShippingRate = shippingRates.FirstOrDefault();
-            var customer = _customerContext.CurrentContact.CurrentContact;
+            var shippingmethods = GetShippingMethods(shippingRates);
+            var selectedShippingRate = shippingRates.First();
+            var customer = _customerContext.CurrentContact.Service.CurrentContact;
             var paymentMethods = _checkoutService.GetPaymentMethods();
 
-            if (selectedShippingRate != null)
-            {
-                _checkoutService.UpdateShipment(shipment, selectedShippingRate);
-            }
-            else
-            {
-                ModelState.AddModelError("ShippingRate", _localizationService.GetString("/Checkout/Payment/Errors/NoShippingRate"));
-            }
-            
+            _checkoutService.UpdateShipment(shipment, selectedShippingRate);
+
             if (viewModel == null)
             {
-                var shippingMethod = shippingMethods.FirstOrDefault();
-                viewModel = CreateCheckoutViewModel(paymentMethods.First(), shippingMethod == null ? Guid.Empty : shippingMethod.Id, customer);
+                viewModel = CreateCheckoutViewModel(paymentMethods.First(), shippingmethods.First().Id, customer);
 
                 // Run the workflow once to calculate all taxes, charges and get the correct total amounts.
                 _cartService.RunWorkflow(OrderGroupWorkflowManager.CartValidateWorkflowName);
@@ -184,7 +181,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
             viewModel.ReferrerUrl = GetReferrerUrl();
             viewModel.CurrentPage = currentPage;
             viewModel.PaymentMethodViewModels = paymentMethods;
-            viewModel.ShippingMethodViewModels = shippingMethods;
+            viewModel.ShippingMethodViewModels = shippingmethods;
             viewModel.AvailableAddresses = GetAvailableAddresses();
 
             return viewModel;
@@ -215,7 +212,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
 
         private IList<ShippingAddress> GetAvailableAddresses()
         {
-            var currentContact = _customerContext.CurrentContact.CurrentContact;
+            var currentContact = _customerContext.CurrentContact.Service.CurrentContact;
             List<ShippingAddress> addresses = new List<ShippingAddress>();
 
             if (currentContact != null)
@@ -414,11 +411,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
 
             SaveBillingAddress(checkoutViewModel);
 
-            if (!SaveShippingAddresses(checkoutViewModel))
-            {
-                InitializeCheckoutViewModel(currentPage, checkoutViewModel);
-                return View("Index", checkoutViewModel);
-            }
+            SaveShippingAddresses(checkoutViewModel);
 
             _cartService.RunWorkflow(OrderGroupWorkflowManager.CartPrepareWorkflowName);
             _cartService.SaveCart();
@@ -463,16 +456,9 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
         /// then they are also stored as customer addresses and gets related to the current contact.
         /// </summary>
         /// <param name="checkoutViewModel">The view model representing the purchase order.</param>
-        /// <returns><c>true</c> if there save was successful, otherwise <c>false</c>.</returns>
-        private bool SaveShippingAddresses(CheckoutViewModel checkoutViewModel)
+        private void SaveShippingAddresses(CheckoutViewModel checkoutViewModel)
         {
-            if (checkoutViewModel.ShippingAddresses == null || 
-                !checkoutViewModel.ShippingAddresses.Any(address => address.ShippingMethodId != Guid.Empty))
-            {
-                return false;
-            }
-
-            foreach (ShippingAddress shippingAddress in checkoutViewModel.ShippingAddresses)
+            foreach (ShippingAddress shippingAddress in checkoutViewModel.ShippingAddresses ?? Enumerable.Empty<ShippingAddress>())
             {
                 var orderAddress = _checkoutService.AddNewOrderAddress();
                 _addressBookService.MapModelToOrderAddress(shippingAddress, orderAddress);
@@ -486,15 +472,13 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
 
                 SaveToAddressBookIfNeccessary(shippingAddress);
             }
-
-            return true;
         }
 
         private void SaveToAddressBookIfNeccessary(ShippingAddress address)
         {
             if (address.SaveAddress && User.Identity.IsAuthenticated && _addressBookService.CanSave(address))
             {
-                var currentContact = _customerContext.CurrentContact.CurrentContact;
+                var currentContact = _customerContext.CurrentContact.Service.CurrentContact;
                 var customerAddress = currentContact.ContactAddresses.FirstOrDefault(x => x.AddressId == address.AddressId) ?? CustomerAddress.CreateInstance();
 
                 _addressBookService.MapModelToCustomerAddress(address, customerAddress);
@@ -580,7 +564,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
             }
 
             CheckoutViewModel viewModel = InitializeCheckoutViewModel(currentPage, null);
-            ModelState.AddModelError("Purchase", filterContext.Exception.Message);
+            viewModel.ErrorMessage = filterContext.Exception.Message;
 
             return View("index", viewModel);
         }

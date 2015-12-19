@@ -1,6 +1,6 @@
 ﻿using EPiServer.Core;
+using EPiServer.Reference.Commerce.Domain.Models;
 using EPiServer.Reference.Commerce.Site.Features.Login.Pages;
-using EPiServer.Reference.Commerce.Site.Features.Shared.Models;
 using EPiServer.Reference.Commerce.Site.Features.Shared.ViewModels;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Login.ViewModels

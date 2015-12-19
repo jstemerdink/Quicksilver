@@ -6,7 +6,7 @@ using Mediachase.Commerce.Orders.Search;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Services
 {
-    public class ConfirmationService
+    public class ConfirmationService : Domain.Services.ConfirmationService
     {
         public PurchaseOrder GetOrder(int orderNumber, bool mock = false)
         {

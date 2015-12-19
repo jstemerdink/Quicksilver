@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
 
+using EPiServer.Reference.Commerce.Extensions;
+
 namespace EPiServer.Reference.Commerce.Site.Tests.Features.Shared.Extensions
 {
     [TestClass]

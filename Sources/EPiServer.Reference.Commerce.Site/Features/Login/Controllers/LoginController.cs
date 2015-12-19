@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using EPiServer.Core;
 using EPiServer.Framework.Localization;
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+using EPiServer.Reference.Commerce.Domain.Models;
 using EPiServer.Reference.Commerce.Shared.Models.Identity;
 using EPiServer.Reference.Commerce.Site.Features.Login.Pages;
 using EPiServer.Reference.Commerce.Site.Features.Login.Services;
@@ -137,7 +139,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Login.Controllers
             RegisterAccountViewModel viewModel = new RegisterAccountViewModel
             {
                 ErrorMessage = filterContext.Exception.Message,
-                Address = new Shared.Models.Address()
+                Address = new Address()
             };
 
             _addressBookService.LoadAddress(viewModel.Address);

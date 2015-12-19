@@ -13,6 +13,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+using EPiServer.Reference.Commerce.Domain.Facades;
+
 namespace EPiServer.Reference.Commerce.Site.Tests.Features.Shared.Controllers
 {
     [TestClass]
