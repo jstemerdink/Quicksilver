@@ -1,5 +1,4 @@
 ﻿using EPiServer.Framework.Localization;
-using EPiServer.Reference.Commerce.Shared.Models.Identity;
 using EPiServer.Reference.Commerce.Site.Features.Login.ViewModels;
 using EPiServer.Reference.Commerce.Site.Features.Shared.Extensions;
 using EPiServer.Reference.Commerce.Site.Infrastructure.Facades;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 
 using EPiServer.Reference.Commerce.Domain.Facades;
+using EPiServer.Reference.Commerce.Domain.Models.Identity;
 using EPiServer.Reference.Commerce.Extensions;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Login.Controllers

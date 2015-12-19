@@ -1,5 +1,4 @@
 ﻿using EPiServer.Core;
-using EPiServer.Reference.Commerce.Shared.Models.Identity;
 using EPiServer.Security;
 using EPiServer.ServiceLocation;
 using EPiServer.Shell;
@@ -16,6 +15,8 @@ using Owin;
 using System;
 using System.Threading.Tasks;
 using System.Web;
+
+using EPiServer.Reference.Commerce.Domain.Models.Identity;
 
 [assembly: OwinStartupAttribute(typeof(EPiServer.Reference.Commerce.Site.Infrastructure.Owin.Startup))]
 namespace EPiServer.Reference.Commerce.Site.Infrastructure.Owin

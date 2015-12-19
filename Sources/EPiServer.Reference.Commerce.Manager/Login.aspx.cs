@@ -1,11 +1,12 @@
-﻿using EPiServer.Reference.Commerce.Shared.Models.Identity;
-using Mediachase.Commerce.Core;
+﻿using Mediachase.Commerce.Core;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
+using EPiServer.Reference.Commerce.Domain.Models.Identity;
 
 namespace EPiServer.Reference.Commerce.Manager
 {

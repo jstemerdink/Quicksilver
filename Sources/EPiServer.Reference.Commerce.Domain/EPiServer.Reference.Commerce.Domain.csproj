@@ -323,9 +323,16 @@
     <Compile Include="Facades\UrlAuthorizationFacade.cs" />
     <Compile Include="Factories\CartFactory.cs" />
     <Compile Include="Factories\ProductFactory.cs" />
+    <Compile Include="Handlers\ControllerExceptionHandler.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Contracts\Models\IPageViewModel.cs" />
     <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Models\Identity\ApplicationDbContext.cs" />
+    <Compile Include="Models\Identity\ApplicationSignInManager.cs" />
+    <Compile Include="Models\Identity\ApplicationUser.cs" />
+    <Compile Include="Models\Identity\ApplicationUserManager.cs" />
+    <Compile Include="Models\Identity\ChallengeResult.cs" />
+    <Compile Include="Models\Identity\ContactIdentityResult.cs" />
     <Compile Include="Models\MailBasePage.cs" />
     <Compile Include="Models\OrderDiscountModel.cs" />
     <Compile Include="Models\PaymentMethodBase.cs" />
@@ -352,6 +359,7 @@
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\PromotionEntryService.cs" />
     <Compile Include="Services\PromotionService.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -363,7 +371,6 @@
     <Folder Include="Contracts\Managers\" />
     <Folder Include="Contracts\Repositories\" />
     <Folder Include="Contracts\Validators\" />
-    <Folder Include="Models\Identity\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EPiServer.Reference.Commerce.Extensions\EPiServer.Reference.Commerce.Extensions.csproj">

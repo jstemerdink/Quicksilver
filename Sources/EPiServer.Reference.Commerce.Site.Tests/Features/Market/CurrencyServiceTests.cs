@@ -1,8 +1,12 @@
 ﻿using System.Linq;
+
+using EPiServer.Reference.Commerce.Domain.Services;
+
 using Mediachase.Commerce;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using EPiServer.Reference.Commerce.Site.Features.Market.Services;
+
+using CurrencyService = EPiServer.Reference.Commerce.Site.Features.Market.Services.CurrencyService;
 
 namespace EPiServer.Reference.Commerce.Site.Tests.Features.Market
 {

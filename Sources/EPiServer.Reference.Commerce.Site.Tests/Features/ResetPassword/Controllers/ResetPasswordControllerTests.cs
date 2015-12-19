@@ -1,5 +1,4 @@
 ﻿using EPiServer.Framework.Localization;
-using EPiServer.Reference.Commerce.Shared.Models.Identity;
 using EPiServer.Reference.Commerce.Shared.Services;
 using EPiServer.Reference.Commerce.Site.Features.Login.Services;
 using EPiServer.Reference.Commerce.Site.Features.ResetPassword.Controllers;
@@ -19,6 +18,7 @@ using System.Web.Mvc;
 
 using EPiServer.Reference.Commerce.Domain.Contracts.Services;
 using EPiServer.Reference.Commerce.Domain.Facades;
+using EPiServer.Reference.Commerce.Domain.Models.Identity;
 
 namespace EPiServer.Reference.Commerce.Site.Tests.Features.ResetPassword.Controllers
 {

@@ -1,4 +1,6 @@
-﻿using EPiServer.Core;
+﻿using System;
+
+using EPiServer.Core;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Controllers;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Models;
 using EPiServer.Reference.Commerce.Site.Features.Cart.Services;
@@ -104,7 +106,7 @@ namespace EPiServer.Reference.Commerce.Site.Tests.Features.Cart.Controllers
 
         Mock<LinksRepository> _linksRepository;
         Mock<IRelationRepository> _relationRepository ;
-        Mock<CultureInfo> _preferredCulture;
+        Mock<Func<CultureInfo>> _preferredCulture;
         Mock<ReferenceConverter> _referenceConverter;
 
         [TestInitialize]
@@ -117,7 +119,7 @@ namespace EPiServer.Reference.Commerce.Site.Tests.Features.Cart.Controllers
             _wishListServiceMock = new Mock<ICartService>();
             _linksRepository = new Mock<LinksRepository>();
             _relationRepository = new Mock<IRelationRepository>();
-            _preferredCulture = new Mock<CultureInfo>();
+            _preferredCulture = new Mock<Func<CultureInfo>>();
             _referenceConverter = new Mock<ReferenceConverter>();
 
             _contentLoaderMock.Setup(c => c.Get<StartPage>(ContentReference.StartPage))

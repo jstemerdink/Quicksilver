@@ -1,5 +1,4 @@
-﻿using EPiServer.Reference.Commerce.Shared.Models.Identity;
-using EPiServer.Reference.Commerce.Site.Features.Login.Pages;
+﻿using EPiServer.Reference.Commerce.Site.Features.Login.Pages;
 using EPiServer.Reference.Commerce.Site.Features.Login.Services;
 using EPiServer.Reference.Commerce.Site.Features.Shared.Controllers;
 using EPiServer.Reference.Commerce.Site.Infrastructure.Facades;
@@ -14,6 +13,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 
 using EPiServer.Reference.Commerce.Domain.Facades;
+using EPiServer.Reference.Commerce.Domain.Models.Identity;
 
 namespace EPiServer.Reference.Commerce.Site.Tests.Features.Shared.Controllers
 {

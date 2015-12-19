@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
+
 namespace EPiServer.Reference.Commerce.Site.Tests.Features.Shared.Services
 {
     [TestClass]

@@ -1,6 +1,5 @@
 ﻿using EPiServer.Configuration;
 using EPiServer.Framework.Localization;
-using EPiServer.Reference.Commerce.Shared.Models.Identity;
 using EPiServer.Reference.Commerce.Site.Features.Login.Controllers;
 using EPiServer.Reference.Commerce.Site.Features.Login.ViewModels;
 using EPiServer.Reference.Commerce.Site.Tests.TestSupport.Fakes;
@@ -15,6 +14,8 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+
+using EPiServer.Reference.Commerce.Domain.Models.Identity;
 
 namespace EPiServer.Reference.Commerce.Site.Tests.Features.Login.Controllers
 {

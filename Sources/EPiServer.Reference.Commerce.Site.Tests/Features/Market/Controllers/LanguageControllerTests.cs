@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.Mvc;
 
+using EPiServer.Reference.Commerce.Domain.Services;
+
 namespace EPiServer.Reference.Commerce.Site.Tests.Features.Market.Controllers
 {
     [TestClass]

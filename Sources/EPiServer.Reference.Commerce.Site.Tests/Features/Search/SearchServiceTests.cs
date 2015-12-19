@@ -5,6 +5,7 @@ using System.Linq;
 using EPiServer.Commerce.Catalog.ContentTypes;
 using EPiServer.Core;
 using EPiServer.Framework.Localization;
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
 using EPiServer.Reference.Commerce.Site.Features.Product.Models;
 using EPiServer.Reference.Commerce.Site.Features.Search.Models;
 using EPiServer.Reference.Commerce.Site.Infrastructure.Facades;

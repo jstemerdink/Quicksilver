@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+
+using EPiServer.Reference.Commerce.Domain.Contracts.Services;
 using EPiServer.Reference.Commerce.Site.Features.Market.Controllers;
 using EPiServer.Reference.Commerce.Site.Features.Market.Models;
 using FluentAssertions;

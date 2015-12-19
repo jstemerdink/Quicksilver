@@ -7,7 +7,7 @@ using EPiServer.Core;
 using EPiServer.Framework.Localization;
 using EPiServer.Reference.Commerce.Domain.Contracts.Services;
 using EPiServer.Reference.Commerce.Domain.Models;
-using EPiServer.Reference.Commerce.Shared.Models.Identity;
+using EPiServer.Reference.Commerce.Domain.Models.Identity;
 using EPiServer.Reference.Commerce.Site.Features.Login.Pages;
 using EPiServer.Reference.Commerce.Site.Features.Login.Services;
 using EPiServer.Reference.Commerce.Site.Features.Login.ViewModels;
@@ -16,7 +16,6 @@ using EPiServer.Reference.Commerce.Site.Features.Shared.Services;
 using EPiServer.Reference.Commerce.Site.Features.Start.Pages;
 using Mediachase.Commerce.Customers;
 using Microsoft.AspNet.Identity.Owin;
-using EPiServer.Reference.Commerce.Site.Features.AddressBook.Services;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Login.Controllers
 {

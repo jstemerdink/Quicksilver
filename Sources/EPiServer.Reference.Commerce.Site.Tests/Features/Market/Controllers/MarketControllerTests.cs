@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections;
 using System.Collections.Generic;
+
+using EPiServer.Reference.Commerce.Domain.Services;
 using EPiServer.Reference.Commerce.Site.Features.Market.Models;
 using EPiServer.Reference.Commerce.Site.Features.Market.Services;
 

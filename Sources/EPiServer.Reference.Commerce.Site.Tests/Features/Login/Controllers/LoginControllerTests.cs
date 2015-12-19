@@ -11,7 +11,7 @@ using EPiServer.Framework.Localization;
 using EPiServer.Reference.Commerce.Domain.Contracts.Services;
 using EPiServer.Reference.Commerce.Domain.Facades;
 using EPiServer.Reference.Commerce.Domain.Models;
-using EPiServer.Reference.Commerce.Shared.Models.Identity;
+using EPiServer.Reference.Commerce.Domain.Models.Identity;
 using EPiServer.Reference.Commerce.Site.Features.Login.Controllers;
 using EPiServer.Reference.Commerce.Site.Features.Login.Pages;
 using EPiServer.Reference.Commerce.Site.Features.Login.Services;

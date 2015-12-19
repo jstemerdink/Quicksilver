@@ -304,13 +304,6 @@
   <ItemGroup>
     <Compile Include="GenericCreditCardPaymentGateway.cs" />
     <Compile Include="CatalogIndexer\RestIndexer.cs" />
-    <Compile Include="Models\Identity\ApplicationDbContext.cs" />
-    <Compile Include="Models\Identity\ApplicationSignInManager.cs" />
-    <Compile Include="Models\Identity\ApplicationUser.cs" />
-    <Compile Include="Models\Identity\ApplicationUserManager.cs" />
-    <Compile Include="Models\Identity\ChallengeResult.cs" />
-    <Compile Include="Models\Identity\ContactIdentityResult.cs" />
-    <Compile Include="Models\MailBasePage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CatalogIndexer\RestSearchDocument.cs" />
     <Compile Include="CatalogIndexer\RestSearchField.cs" />
@@ -326,6 +319,9 @@
       <Project>{180496d0-0ea4-4391-aca0-5521d64ae291}</Project>
       <Name>EPiServer.Reference.Commerce.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

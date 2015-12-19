@@ -23,7 +23,9 @@ using FluentAssertions;
 using EPiServer.Commerce.Catalog.ContentTypes;
 using EPiServer.Reference.Commerce.Domain.Contracts.Services;
 using EPiServer.Reference.Commerce.Domain.Facades;
-using EPiServer.Reference.Commerce.Site.Features.Market.Services;
+using EPiServer.Reference.Commerce.Domain.Services;
+
+using CurrencyService = EPiServer.Reference.Commerce.Site.Features.Market.Services.CurrencyService;
 
 namespace EPiServer.Reference.Commerce.Site.Tests.Features.Product.Controllers
 {

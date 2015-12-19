@@ -1,5 +1,4 @@
 ﻿using EPiServer.Core;
-using EPiServer.Reference.Commerce.Shared.Models.Identity;
 using EPiServer.Reference.Commerce.Site.Features.Login.Services;
 using EPiServer.Reference.Commerce.Site.Features.Shared.Extensions;
 using EPiServer.Web;
@@ -7,6 +6,7 @@ using EPiServer.Web.Mvc;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
+using EPiServer.Reference.Commerce.Domain.Models.Identity;
 using EPiServer.Reference.Commerce.Extensions;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Shared.Controllers
