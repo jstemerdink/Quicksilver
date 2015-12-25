@@ -1,3 +1,5 @@
+using System.Linq;
+
 using EPiServer.ServiceLocation;
 using Mediachase.Commerce.Marketing;
 using Mediachase.Commerce.Website.Helpers;
@@ -32,6 +34,15 @@ namespace EPiServer.Reference.Commerce.Site.Infrastructure.Facades
                 Reset();
             }
             return _helper;
+        }
+
+        public virtual void AddCouponsToMarketingContext()
+        {
+            // Add coupons in the promotion context to the marketing context 
+            foreach (string couponCode in this.PromotionContext.Coupons.Where(couponCode => !string.IsNullOrEmpty(couponCode)))
+            {
+                MarketingContext.Current.AddCouponToMarketingContext(couponCode);
+            }
         }
     }
 }
