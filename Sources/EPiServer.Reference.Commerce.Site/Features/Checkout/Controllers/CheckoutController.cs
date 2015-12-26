@@ -93,6 +93,9 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
                 _cartService.SaveCart();
             }
 
+            // Add coupons codes to the context again
+            this._promotionHelperFacade.AddCouponsToMarketingContext();
+
             CheckoutViewModel viewModel = InitializeCheckoutViewModel(currentPage, null);
 
             return View(viewModel);
@@ -267,20 +270,6 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
 
             return PartialView("Partial", viewModel);
         }
-
-        public ActionResult AddCoupon(CheckoutPage currentPage, CheckoutViewModel viewModel, string coupon)
-        {
-            string warningMessage = string.Empty;
-
-            _cartService.AddCouponCode(coupon, out warningMessage);
-            _cartService.SaveCart();
-
-            // Clearing the ModelState will remove any unwanted input validation errors in the new view.
-            ModelState.Clear();
-
-            return PartialView("Partial", viewModel);
-        }
-
 
         /// <summary>
         /// Changes an address in the checkout view to one of the existing customer addresses.

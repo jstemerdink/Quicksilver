@@ -191,8 +191,14 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
 
         public bool AddCouponCode(string code, out string warningMessage)
         {
-            bool success = true;
             warningMessage = string.Empty;
+            bool success = true;
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                return true;
+            }
+
             List<Discount> discounts = this.GetAllDiscounts();
 
             if (discounts.Exists(x => x.DiscountCode == code))
