@@ -43,6 +43,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
         private readonly IPricingService _pricingService;
         private readonly LocalizationService _localizationService;
         private readonly PromotionHelperFacade _promotionHelperFacade;
+        private readonly IPromotionService _promotionService;
 
         public CartService(Func<string, CartHelper> cartHelper, 
             IContentLoader contentLoader, 
@@ -51,7 +52,8 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
             IProductService productService,
             IPricingService pricingService,
             LocalizationService localizationSrvice,
-            PromotionHelperFacade promotionHelperFacade)
+            PromotionHelperFacade promotionHelperFacade,
+            IPromotionService promotionService)
         {
             _cartHelper = cartHelper;
             _contentLoader = contentLoader;
@@ -62,6 +64,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
             _pricingService = pricingService;
             _localizationService = localizationSrvice;
             _promotionHelperFacade = promotionHelperFacade;
+            _promotionService = promotionService;
         }
 
         public void InitializeAsWishList()
@@ -189,6 +192,12 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
             lineItem.AcceptChanges();
         }
 
+        /// <summary>
+        /// Adds a coupon code and applies the discount to the cart if valid.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <param name="warningMessage">The warning message.</param>
+        /// <returns><c>true</c> if added, <c>false</c> otherwise.</returns>
         public bool AddCouponCode(string code, out string warningMessage)
         {
             warningMessage = string.Empty;
@@ -199,12 +208,12 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
                 return true;
             }
 
-            List<Discount> discounts = this.GetAllDiscounts();
+            List<Discount> discounts = _promotionService.GetAllDiscounts(this.CartHelper.Cart);
 
             if (discounts.Exists(x => x.DiscountCode == code))
             {
                 success = false;
-                warningMessage = this._localizationService.GetString("/common/cart/coupon_codes/error_already_used");
+                warningMessage = this._localizationService.GetString("/Checkout/Coupons/CouponCode/AlreadyUsed");
             }
             else
             {
@@ -215,12 +224,12 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
                     this.ValidateCart();
 
                     // check if coupon was applied
-                    discounts = this.GetAllDiscounts();
+                    discounts = _promotionService.GetAllDiscounts(this.CartHelper.Cart);
 
                     if (discounts.Count == 0 || !discounts.Exists(x => x.DiscountCode == code))
                     {
                         success = false;
-                        warningMessage = this._localizationService.GetString("/common/cart/coupon_codes/error_invalid");
+                        warningMessage = this._localizationService.GetString("/Checkout/Coupons/CouponCode/Invalid");
                     }
                 }
 
@@ -233,51 +242,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
             return success;
         }
 
-        public List<Discount> GetAllDiscounts()
-        {
-            Mediachase.Commerce.Orders.Cart cart = this.CartHelper.Cart;
-            List<Discount> discounts = new List<Discount>();
-
-            foreach (OrderForm form in cart.OrderForms)
-            {
-                foreach (
-                    Discount discount in
-                        form.Discounts.Cast<Discount>().Where(x => !string.IsNullOrEmpty(x.DiscountCode)))
-                {
-                    this.AddToDiscountList(discount, discounts);
-                }
-
-                foreach (LineItem item in form.LineItems)
-                {
-                    foreach (
-                        Discount discount in
-                            item.Discounts.Cast<Discount>().Where(x => !string.IsNullOrEmpty(x.DiscountCode)))
-                    {
-                        this.AddToDiscountList(discount, discounts);
-                    }
-                }
-
-                foreach (Shipment shipment in form.Shipments)
-                {
-                    foreach (
-                        Discount discount in
-                            shipment.Discounts.Cast<Discount>().Where(x => !string.IsNullOrEmpty(x.DiscountCode)))
-                    {
-                        this.AddToDiscountList(discount, discounts);
-                    }
-                }
-            }
-            return discounts;
-        }
-
-
-        private void AddToDiscountList(Discount discount, List<Discount> discounts)
-        {
-            if (!discounts.Exists(x => x.DiscountCode.Equals(discount.DiscountCode)))
-            {
-                discounts.Add(discount);
-            }
-        }
+        
 
         public void ChangeQuantity(string code, decimal quantity)
         {

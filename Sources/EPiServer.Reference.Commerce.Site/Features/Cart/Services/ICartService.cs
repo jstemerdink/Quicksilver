@@ -29,6 +29,5 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
         void InitializeAsWishList();
         void UpdateLineItemSku(string oldCode, string newCode, decimal quantity);
         bool AddCouponCode(string code, out string warningMessage);
-        List<Discount> GetAllDiscounts();
     }
 }

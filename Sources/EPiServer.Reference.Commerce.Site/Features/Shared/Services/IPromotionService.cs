@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Mediachase.Commerce;
 using Mediachase.Commerce.Catalog;
+using Mediachase.Commerce.Orders;
 using Mediachase.Commerce.Pricing;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Shared.Services
@@ -9,5 +10,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Shared.Services
     {
         IList<IPriceValue> GetDiscountPriceList(IEnumerable<CatalogKey> catalogKeys, MarketId marketId, Currency currency);
         IPriceValue GetDiscountPrice(CatalogKey catalogKey, MarketId marketId, Currency currency);
+
+        List<Discount> GetAllDiscounts(Mediachase.Commerce.Orders.Cart cart);
     }
 }
