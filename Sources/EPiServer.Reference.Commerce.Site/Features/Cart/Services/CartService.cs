@@ -210,7 +210,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
 
             List<Discount> discounts = _promotionService.GetAllDiscounts(this.CartHelper.Cart);
 
-            if (discounts.Exists(x => x.DiscountCode == code))
+            if (discounts.Exists(x => x.DiscountCode.Equals(code, StringComparison.OrdinalIgnoreCase)))
             {
                 success = false;
                 warningMessage = this._localizationService.GetString("/Checkout/Coupons/CouponCode/AlreadyUsed");
@@ -226,7 +226,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
                     // check if coupon was applied
                     discounts = _promotionService.GetAllDiscounts(this.CartHelper.Cart);
 
-                    if (discounts.Count == 0 || !discounts.Exists(x => x.DiscountCode == code))
+                    if (discounts.Count == 0 || !discounts.Exists(x => x.DiscountCode.Equals(code, StringComparison.OrdinalIgnoreCase)))
                     {
                         success = false;
                         warningMessage = this._localizationService.GetString("/Checkout/Coupons/CouponCode/Invalid");
