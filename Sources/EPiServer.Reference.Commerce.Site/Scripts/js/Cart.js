@@ -5,6 +5,7 @@
             .on('click', '.jsRemoveCartItem', Cart.removeCartItem)
             .on('change', '.jsChangeCartItem', Cart.changeCartItem)
             .on('click', '.jsAddToCart', Cart.addCartItem)
+            .on('click', '.jsAddCouponCode', Cart.addCouponCode)
             .on('change', '#MiniCart', function () { $("#MiniCartResponsive").html($(this).html()); })
             .on('change', '#WishListMiniCart', function () { $("#WishListMiniCartResponsive").html($(this).html()); })
             .on('click', '.jsCartContinueShopping', function () {
@@ -76,7 +77,7 @@
         var formContainer = $("#" + form.data("container"));
         var skuCode = $("#code", form).val();
 
-        $("#CartWarningMessage").hide()
+        $("#CartWarningMessage").hide();
         $(".warning-message", $("#CartWarningMessage")).html("");
 
         $.ajax({
@@ -109,6 +110,34 @@
             error: function (xhr, status, error) {
                 $(".warning-message", $("#CartWarningMessage")).html(xhr.statusText);
                 $("#CartWarningMessage").show();
+            }
+        });
+    },
+    addCouponCode: function (e) {
+
+        e.preventDefault();
+        var form = $(this).closest("form");
+        var formContainer = $("#" + form.data("container"));
+        var couponCode = $("#couponcode", form).val();
+
+        $("#CartWarningMessage").hide();
+        $(".warning-message", $("#CartWarningMessage")).html("");
+
+        $.ajax({
+            type: "POST",
+            url: form[0].action,
+            data: { couponCode: couponCode },
+            success: function (result) {
+
+                formContainer.html($(result));
+                $('.cartItemCountLabel', formContainer.parent()).text($('#CartItemCount', formContainer).val());
+                $('.cartTotalAmountLabel', formContainer.parent()).text($('#CartTotalAmount', formContainer).val());
+
+                formContainer.change();
+            },
+            error: function (xhr, status, error) {
+                $(".warning-message", $("#CouponWarningMessage")).html(xhr.statusText);
+                $("#CouponWarningMessage").show();
             }
         });
     },

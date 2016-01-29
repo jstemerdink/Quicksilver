@@ -9389,6 +9389,10 @@ fieldset[disabled] .btn-gray-light.active {
   margin: 0 auto;
   padding: 0 20px;
 }
+div#CouponWarningMessage.alert {
+  height: 35px;
+  padding: 7px;
+}
 .cookies {
   animation: cookiesIn 0.3s ease-out;
   -webkit-animation: cookiesIn 0.5s ease-out;

@@ -49,6 +49,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
         private const string _shippingAddressPrefix = "ShippingAddresses[{0}]";
         private readonly ControllerExceptionHandler _controllerExceptionHandler;
         private readonly CustomerContextFacade _customerContext;
+        private readonly PromotionHelperFacade _promotionHelperFacade;
 
         public CheckoutController(
                     ICartService cartService,
@@ -63,7 +64,8 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
                     CurrencyService currencyService,
                     IAddressBookService addressBookService,
                     ControllerExceptionHandler controllerExceptionHandler,
-                    CustomerContextFacade customerContextFacade)
+                    CustomerContextFacade customerContextFacade,
+                    PromotionHelperFacade promotionHelperFacade)
         {
             _cartService = cartService;
             _contentRepository = contentRepository;
@@ -78,6 +80,7 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
             _addressBookService = addressBookService;
             _controllerExceptionHandler = controllerExceptionHandler;
             _customerContext = customerContextFacade;
+            _promotionHelperFacade = promotionHelperFacade;
         }
 
         [HttpGet]
@@ -89,6 +92,9 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
                 _cartHelper(Mediachase.Commerce.Orders.Cart.DefaultName).Cart.BillingCurrency = currency;
                 _cartService.SaveCart();
             }
+
+            // Add coupons codes to the context again
+            this._promotionHelperFacade.AddCouponsToMarketingContext();
 
             CheckoutViewModel viewModel = InitializeCheckoutViewModel(currentPage, null);
 
@@ -378,6 +384,9 @@ namespace EPiServer.Reference.Commerce.Site.Features.Checkout.Controllers
         [HttpPost]
         public ActionResult Purchase(CheckoutPage currentPage, CheckoutViewModel checkoutViewModel, IPaymentMethodViewModel<IPaymentOption> paymentViewModel)
         {
+            // Add coupons codes to the context again
+            this._promotionHelperFacade.AddCouponsToMarketingContext();
+
             // Since the payment property is marked with an exclude binding attribute in the CheckoutViewModel
             // it needs to be manually re-added again.
             checkoutViewModel.Payment = paymentViewModel;

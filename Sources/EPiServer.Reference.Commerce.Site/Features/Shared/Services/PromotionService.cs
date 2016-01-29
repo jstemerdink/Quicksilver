@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using EPiServer.Commerce.Catalog.ContentTypes;
+using EPiServer.Reference.Commerce.Site.Features.Cart.Services;
 using EPiServer.Reference.Commerce.Site.Infrastructure.Facades;
 using EPiServer.ServiceLocation;
 using Mediachase.Commerce;
 using Mediachase.Commerce.Catalog;
 using Mediachase.Commerce.Marketing;
 using Mediachase.Commerce.Markets;
+using Mediachase.Commerce.Orders;
 using Mediachase.Commerce.Pricing;
 
 namespace EPiServer.Reference.Commerce.Site.Features.Shared.Services
@@ -63,6 +65,51 @@ namespace EPiServer.Reference.Commerce.Site.Features.Shared.Services
         public IPriceValue GetDiscountPrice(CatalogKey catalogKey, MarketId marketId, Currency currency)
         {
             return GetDiscountPriceList(new[] { catalogKey }, marketId, currency).FirstOrDefault();
+        }
+
+        public List<Discount> GetAllDiscounts(Mediachase.Commerce.Orders.Cart cart)
+        {
+           List<Discount> discounts = new List<Discount>();
+
+            foreach (OrderForm form in cart.OrderForms)
+            {
+                foreach (
+                    Discount discount in
+                        form.Discounts.Cast<Discount>().Where(x => !string.IsNullOrEmpty(x.DiscountCode)))
+                {
+                    AddToDiscountList(discount, discounts);
+                }
+
+                foreach (LineItem item in form.LineItems)
+                {
+                    foreach (
+                        Discount discount in
+                            item.Discounts.Cast<Discount>().Where(x => !string.IsNullOrEmpty(x.DiscountCode)))
+                    {
+                        AddToDiscountList(discount, discounts);
+                    }
+                }
+
+                foreach (Shipment shipment in form.Shipments)
+                {
+                    foreach (
+                        Discount discount in
+                            shipment.Discounts.Cast<Discount>().Where(x => !string.IsNullOrEmpty(x.DiscountCode)))
+                    {
+                        AddToDiscountList(discount, discounts);
+                    }
+                }
+            }
+            return discounts;
+        }
+
+
+        private static void AddToDiscountList(Discount discount, List<Discount> discounts)
+        {
+            if (!discounts.Exists(x => x.DiscountCode.Equals(discount.DiscountCode)))
+            {
+                discounts.Add(discount);
+            }
         }
 
         private IList<IPriceValue> GetDiscountPrices(IList<IPriceValue> prices, MarketId marketId, Currency currency)

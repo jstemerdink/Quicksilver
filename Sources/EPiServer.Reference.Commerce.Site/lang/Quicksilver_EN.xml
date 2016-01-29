@@ -65,6 +65,10 @@
           <Info>Got a Coupon Code? Enter it and we will apply that to your cart as well.</Info>
           <Button>Apply</Button>
         </CouponCode>
+        <Errors>
+          <Invalid>The coupon code is not valid.</Invalid>
+          <AlreadyUsed>You already used this coupon code.</AlreadyUsed>
+        </Errors>
       </Coupons>
       <Continue>
         <Button>Continue shopping</Button>

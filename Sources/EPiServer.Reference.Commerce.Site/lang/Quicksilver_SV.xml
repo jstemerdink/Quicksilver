@@ -65,6 +65,10 @@
           <Info>Har du en värdekod? Ange den för att ta del av erbjudandet.</Info>
           <Button>Aktivera kod</Button>
         </CouponCode>
+        <Errors>
+          <Invalid>The coupon code is not valid.</Invalid>
+          <AlreadyUsed>You already used this coupon code.</AlreadyUsed>
+        </Errors>
       </Coupons>
       <Continue>
         <Button>Fortsätt shoppa</Button>

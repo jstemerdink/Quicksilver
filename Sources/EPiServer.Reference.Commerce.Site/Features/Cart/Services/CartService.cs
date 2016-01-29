@@ -23,6 +23,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
+using EPiServer.Framework.Localization;
+using EPiServer.Reference.Commerce.Site.Infrastructure.Facades;
+
+using Mediachase.Commerce.Marketing;
+
 namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
 {
     [ServiceConfiguration(typeof(ICartService), Lifecycle = ServiceInstanceScope.Unique)]
@@ -36,13 +41,19 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
         private readonly UrlResolver _urlResolver;
         private readonly IProductService _productService;
         private readonly IPricingService _pricingService;
+        private readonly LocalizationService _localizationService;
+        private readonly PromotionHelperFacade _promotionHelperFacade;
+        private readonly IPromotionService _promotionService;
 
         public CartService(Func<string, CartHelper> cartHelper, 
             IContentLoader contentLoader, 
             ReferenceConverter referenceConverter, 
             UrlResolver urlResolver, 
             IProductService productService,
-            IPricingService pricingService)
+            IPricingService pricingService,
+            LocalizationService localizationSrvice,
+            PromotionHelperFacade promotionHelperFacade,
+            IPromotionService promotionService)
         {
             _cartHelper = cartHelper;
             _contentLoader = contentLoader;
@@ -51,6 +62,9 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
             _urlResolver = urlResolver;
             _productService = productService;
             _pricingService = pricingService;
+            _localizationService = localizationSrvice;
+            _promotionHelperFacade = promotionHelperFacade;
+            _promotionService = promotionService;
         }
 
         public void InitializeAsWishList()
@@ -177,6 +191,58 @@ namespace EPiServer.Reference.Commerce.Site.Features.Cart.Services
             ValidateCart();
             lineItem.AcceptChanges();
         }
+
+        /// <summary>
+        /// Adds a coupon code and applies the discount to the cart if valid.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <param name="warningMessage">The warning message.</param>
+        /// <returns><c>true</c> if added, <c>false</c> otherwise.</returns>
+        public bool AddCouponCode(string code, out string warningMessage)
+        {
+            warningMessage = string.Empty;
+            bool success = true;
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                return true;
+            }
+
+            List<Discount> discounts = _promotionService.GetAllDiscounts(this.CartHelper.Cart);
+
+            if (discounts.Exists(x => x.DiscountCode.Equals(code, StringComparison.OrdinalIgnoreCase)))
+            {
+                success = false;
+                warningMessage = this._localizationService.GetString("/Checkout/Coupons/CouponCode/AlreadyUsed");
+            }
+            else
+            {
+                MarketingContext.Current.AddCouponToMarketingContext(code);
+
+                if (!this.CartHelper.IsEmpty)
+                {
+                    this.ValidateCart();
+
+                    // check if coupon was applied
+                    discounts = _promotionService.GetAllDiscounts(this.CartHelper.Cart);
+
+                    if (discounts.Count == 0 || !discounts.Exists(x => x.DiscountCode.Equals(code, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        success = false;
+                        warningMessage = this._localizationService.GetString("/Checkout/Coupons/CouponCode/Invalid");
+                    }
+                }
+
+                if (success && !this._promotionHelperFacade.PromotionContext.Coupons.Contains(code))
+                {
+                    this._promotionHelperFacade.PromotionContext.Coupons.Add(code);
+                }
+            }
+
+            return success;
+        }
+
+        
 
         public void ChangeQuantity(string code, decimal quantity)
         {
